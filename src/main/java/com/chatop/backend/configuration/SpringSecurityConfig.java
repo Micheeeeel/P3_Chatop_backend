@@ -25,8 +25,8 @@ public class SpringSecurityConfig {
             .antMatchers("/user").hasRole("USER")
             .anyRequest().authenticated()
         )
-        .formLogin(formLogin -> {})
-        .oauth2Login(oauth2 -> {});
+        .formLogin(formLogin -> {});
+        //.oauth2Login(oauth2 -> {});
 
     return http.build();
     }
