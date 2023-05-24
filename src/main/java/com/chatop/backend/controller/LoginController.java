@@ -1,7 +1,8 @@
 package com.chatop.backend.controller;
 
 import javax.annotation.security.RolesAllowed;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -10,21 +11,21 @@ public class LoginController
 {
 	
    @RolesAllowed("USER")
-   @RequestMapping("/*")
+   @GetMapping("/*")
    public String getUser()
    {
       return "Welcome User";
    }
 
    @RolesAllowed({"USER","ADMIN"})
-   @RequestMapping("/admin")
+   @GetMapping("/admin")
    public String getAdmin()
    {
       return "Welcome Admin";
    }
    
    
-   @RequestMapping({ "/hello" })
+   @GetMapping({ "/hello" })
 	public String firstPage() {
 		return "Hello World";
 	}
