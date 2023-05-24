@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController
 
 {
+	
    @RolesAllowed("USER")
    @RequestMapping("/*")
    public String getUser()
@@ -21,4 +22,10 @@ public class LoginController
    {
       return "Welcome Admin";
    }
+   
+   
+   @RequestMapping({ "/hello" })
+	public String firstPage() {
+		return "Hello World";
+	}
 }
