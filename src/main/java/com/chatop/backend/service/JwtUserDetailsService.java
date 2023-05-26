@@ -18,12 +18,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if ("springuser".equals(username)) {
 			//the password for a user is stored in encrypted format using BCrypt
-			// using the Online Bcrypt Generator you can generate the Bcrypt for a password.
-			return new User("springuser", "$2a$10$BUgBmjcTcoeukv2tL1ll3elnjumV0ipNNjalErGBk.XWd2x6.vp5y",
+			// using the Online Bcrypt Generator you can generate the Bcrypt for a password (https://www.javainuse.com/onlineBcrypt)
+			return new User("springuser", "$2a$10$yZrmyJALdWHU0XKm4ypIOOq5zXhVPl.McM73xgIxdf5tMusSZGyVq",
 					new ArrayList<>());
 		} if ("springadmin".equals(username)) {
 			
-			return new User("springuser", "$2a$10$IF.yCUl0WlTKNa0KqdJDWOWbiARPn9NhuoPrNBq.37TEUeliJG7UW",
+			return new User("springadmin", "$2a$10$6VhTvTWVPCANUdteldA1IeSSU8VlB4b4rLAA0XRMMpzft81MGjIJ2",
 					new ArrayList<>());
 		} else {
 			throw new UsernameNotFoundException("User not found with username: " + username);

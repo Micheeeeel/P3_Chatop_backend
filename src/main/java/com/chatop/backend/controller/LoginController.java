@@ -11,7 +11,7 @@ public class LoginController
 
 {
 	
-   @RolesAllowed("USER")
+/*   @RolesAllowed("USER")
    @GetMapping("/*")
    public String getUser()
    {
@@ -24,7 +24,7 @@ public class LoginController
    {
       return "Welcome Admin";
    }
-   
+   */
    
    @GetMapping({ "/hello" })
 	public String firstPage() {
