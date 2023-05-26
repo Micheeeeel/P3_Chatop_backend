@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 //import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			jwtToken = requestTokenHeader.substring(7);
 			try {
-				//DecodedJWT jwt = jwtTokenUtil.verifyToken(jwtToken);
+				DecodedJWT jwt = jwtTokenUtil.verifyToken(jwtToken);
 				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			} catch (Exception e) {
 				System.out.println("Unable to get JWT Token or JWT Token has expired");
