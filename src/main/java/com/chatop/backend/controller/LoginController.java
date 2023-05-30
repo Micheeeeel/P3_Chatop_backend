@@ -26,10 +26,7 @@ public class LoginController
    }
    */
    
-   @GetMapping({ "/api/auth/me" })
-	public String secondPage() {
-		return "Hello me";
-	}
+
 
 	@GetMapping({ "/hello" })
 	public String firstPage() {

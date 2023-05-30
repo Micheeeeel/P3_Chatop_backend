@@ -1,21 +1,24 @@
 package com.chatop.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
 
+import javax.persistence.*;
+
+@Data  // @Data est une annotation Lombok. Nul besoin d’ajouter les getters et les setters.
 @Entity // This tells Hibernate to make a table out of this class
+@Table(name = "user") // indique le nom de la table associée.
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
     private String email;
 
-    public Integer getId() {
+    private String password;
+
+ /*   public Integer getId() {
         return id;
     }
 
@@ -38,4 +41,12 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }*/
 }
