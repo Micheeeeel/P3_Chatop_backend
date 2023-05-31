@@ -3,7 +3,6 @@ package com.chatop.backend.controller;
 
 
 import com.chatop.backend.model.DAOUser;
-import com.chatop.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,12 +43,12 @@ public class JwtAuthenticationController {
 	@PostMapping("/api/auth/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		authenticate(authenticationRequest.getLogin(), authenticationRequest.getPassword());
 		
 		// Si l'authentification réussit, la méthode authenticate() ne lèvera pas d'exception et l'exécution continuera. 
 		// Dans le cas contraire, une exception sera levée, indiquant que l'authentification a échoué.
 		final UserDetails userDetails = userDetailsService
-				.loadUserByUsername(authenticationRequest.getUsername());
+				.loadUserByUsername(authenticationRequest.getLogin());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
@@ -58,9 +57,9 @@ public class JwtAuthenticationController {
 
 
 
-	private void authenticate(String username, String password) throws Exception {
+	private void authenticate(String login, String password) throws Exception {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, password));
 		} catch (DisabledException e) {
 			throw new Exception("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
