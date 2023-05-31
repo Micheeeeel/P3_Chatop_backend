@@ -2,6 +2,8 @@
 package com.chatop.backend.controller;
 
 
+import com.chatop.backend.model.DAOUser;
+import com.chatop.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +35,12 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 
+
+	@PostMapping("/api/auth/resister")
+	public ResponseEntity<?> saveUser(@RequestBody DAOUser user) throws Exception {
+		return ResponseEntity.ok(userDetailsService.save(user));
+	}
+
 	@PostMapping("/api/auth/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
@@ -47,6 +55,8 @@ public class JwtAuthenticationController {
 
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
+
+
 
 	private void authenticate(String username, String password) throws Exception {
 		try {

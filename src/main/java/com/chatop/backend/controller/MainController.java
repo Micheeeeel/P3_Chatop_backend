@@ -1,13 +1,9 @@
 package com.chatop.backend.controller;
 
-import com.chatop.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.chatop.backend.model.User;
+import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.service.UserService;
-
-import java.util.Optional;
 
 @RestController // This means that this class is a RestController bean, and it returns a JSON format into the HTTP request body
 @RequestMapping(path="/api") // This means URL's start with /demo (after Application path)
@@ -25,9 +21,9 @@ public class MainController {
      */
 
     @PostMapping(path="/auth/register") // Map ONLY POST Requests
-    public User createUser(@RequestParam String name
+    public DAOUser createUser(@RequestParam String name
             , @RequestParam String email, @RequestParam String password) {
-        User n = new User();
+        DAOUser n = new DAOUser();
         n.setName(name);
         n.setEmail(email);
         n.setPassword(password);
@@ -39,7 +35,7 @@ public class MainController {
      * @return - An Iterable object of user full filled
      */
     @GetMapping(path="/auth/all")
-    public @ResponseBody Iterable<User> getAllUsers() {
+    public @ResponseBody Iterable<DAOUser> getAllUsers() {
         // This returns a JSON or XML with the users
         return userService.getUsers();
     }

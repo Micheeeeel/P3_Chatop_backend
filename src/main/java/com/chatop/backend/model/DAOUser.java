@@ -1,13 +1,14 @@
 package com.chatop.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 
-@Data  // @Data est une annotation Lombok. Nul besoin d’ajouter les getters et les setters.
+@Data  // @Data is a Lombok annotation. No need to add the getters and setters.
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "user") // indique le nom de la table associée.
-public class User {
+public class DAOUser {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
@@ -16,6 +17,7 @@ public class User {
 
     private String email;
 
+    @JsonIgnore  // because we don't want to serialize the password
     private String password;
 
  /*   public Integer getId() {

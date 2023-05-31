@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.chatop.backend.model.User;
+import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.repository.UserRepository;
 
 import lombok.Data;
@@ -18,11 +18,11 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public Optional<User> getUser(final Integer id) {
+    public Optional<DAOUser> getUser(final Integer id) {
         return userRepository.findById(id);
     }
 
-    public Iterable<User> getUsers() {
+    public Iterable<DAOUser> getUsers() {
         return userRepository.findAll();
     }
 
@@ -30,8 +30,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User saveUser(User user) {
-        User savedUser = userRepository.save(user);
+    public DAOUser saveUser(DAOUser user) {
+        DAOUser savedUser = userRepository.save(user);
         return savedUser;
     }
 
