@@ -1,6 +1,11 @@
 package com.chatop.backend.controller;
 
+import com.chatop.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.service.UserService;
@@ -11,6 +16,9 @@ public class MainController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Create - Add a new employee
@@ -40,10 +48,24 @@ public class MainController {
         return userService.getUsers();
     }
 
-    @GetMapping({ "/api/auth/me" })
+
+    @GetMapping("/auth/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        DAOUser user = userRepository.findByName(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        return ResponseEntity.ok(user);
+    }
+
+/*    @GetMapping({ "/auth/me" })
     public String getMyDetails() {
         return "Hello me";
-    }
+    }*/
 
 /*    *//**
      * Read - Get one employee

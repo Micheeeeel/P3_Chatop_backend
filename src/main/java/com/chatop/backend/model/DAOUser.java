@@ -2,8 +2,10 @@ package com.chatop.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data  // @Data is a Lombok annotation. No need to add the getters and setters.
 @Entity // This tells Hibernate to make a table out of this class
@@ -19,6 +21,26 @@ public class DAOUser {
 
     //@JsonIgnore  // because we don't want to serialize the password
     private String password;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    @PrePersist
+    @JsonProperty("created_at")
+    protected void onCreate() {
+        createdAt = new Date();
+    }
+
+    @PreUpdate
+    @JsonProperty("updated_at")
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 
  /*   public Integer getId() {
         return id;
