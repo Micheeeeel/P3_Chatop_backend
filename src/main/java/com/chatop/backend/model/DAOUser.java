@@ -17,7 +17,7 @@ public class DAOUser {
 
     private String email;
 
-    @JsonIgnore  // because we don't want to serialize the password
+    //@JsonIgnore  // because we don't want to serialize the password
     private String password;
 
  /*   public Integer getId() {

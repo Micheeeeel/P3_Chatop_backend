@@ -36,7 +36,7 @@ public class JwtAuthenticationController {
 	private JwtUserDetailsService userDetailsService;
 
 
-	@PostMapping("/api/auth/resister")
+	@PostMapping("/api/auth/register")
 	public ResponseEntity<?> saveUser(@RequestBody DAOUser user) throws Exception {
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}

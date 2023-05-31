@@ -20,7 +20,7 @@ public class MainController {
      * @return The user object saved
      */
 
-    @PostMapping(path="/auth/register") // Map ONLY POST Requests
+/*    @PostMapping(path="/auth/register") // Map ONLY POST Requests
     public DAOUser createUser(@RequestParam String name
             , @RequestParam String email, @RequestParam String password) {
         DAOUser n = new DAOUser();
@@ -28,7 +28,7 @@ public class MainController {
         n.setEmail(email);
         n.setPassword(password);
         return userService.saveUser(n);
-    }
+    }*/
 
     /**
      * Read - Get all users
