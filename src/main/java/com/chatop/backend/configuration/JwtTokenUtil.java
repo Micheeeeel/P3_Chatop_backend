@@ -13,6 +13,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
+import com.chatop.backend.service.CustomUserDetails;
+
 @Component
 public class JwtTokenUtil implements Serializable {
 
@@ -23,7 +25,7 @@ public class JwtTokenUtil implements Serializable {
 	private String secret;
 
 	//retrieve username from jwt token
-	public String getUsernameFromToken(String token) {
+	public String getUserEmailFromToken(String token) {
 		DecodedJWT jwt = JWT.decode(token);
 		return jwt.getSubject();
 	}
@@ -41,19 +43,19 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	//generate token for user
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(CustomUserDetails userDetails) {
 		Algorithm algorithm = Algorithm.HMAC512(secret);
 		JWTCreator.Builder builder = JWT.create()
-				.withSubject(userDetails.getUsername())
+				.withSubject(userDetails.getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000));
 
 		return builder.sign(algorithm);
 	}
 
 	//validate token
-	public Boolean validateToken(String token, UserDetails userDetails) {
-		final String username = getUsernameFromToken(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	public Boolean validateToken(String token, CustomUserDetails userDetails) {
+		final String userEmailFromToken = getUserEmailFromToken(token);
+		return (userEmailFromToken.equals(userDetails.getEmail()) && !isTokenExpired(token));
 	}
 
 	// Verify the token

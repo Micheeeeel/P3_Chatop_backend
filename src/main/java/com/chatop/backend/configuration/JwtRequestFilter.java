@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 //import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.chatop.backend.service.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			jwtToken = requestTokenHeader.substring(7);
 			try {
 				DecodedJWT jwt = jwtTokenUtil.verifyToken(jwtToken);
-				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+				username = jwtTokenUtil.getUserEmailFromToken(jwtToken);
 			} catch (Exception e) {
 				System.out.println("Unable to get JWT Token or JWT Token has expired");
 			}
@@ -53,7 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		// Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+			CustomUserDetails userDetails = this.jwtUserDetailsService.loadUserByUserEmail(username);
 
 			// if token is valid configure Spring Security to manually set
 			// authentication

@@ -3,6 +3,7 @@ package com.chatop.backend.controller;
 
 
 import com.chatop.backend.model.DAOUser;
+import com.chatop.backend.service.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +38,16 @@ public class JwtAuthenticationController {
 
 	@PostMapping("/api/auth/register")
 	public ResponseEntity<?> saveUser(@RequestBody DAOUser user) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(user));
+
+		userDetailsService.save(user);
+
+		// Load user details
+		final CustomUserDetails userDetails = userDetailsService.loadUserByUserEmail(user.getEmail());
+
+		// Generate token
+		final String token = jwtTokenUtil.generateToken(userDetails);
+
+		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
 	@PostMapping("/api/auth/login")
@@ -47,7 +57,7 @@ public class JwtAuthenticationController {
 		
 		// Si l'authentification réussit, la méthode authenticate() ne lèvera pas d'exception et l'exécution continuera. 
 		// Dans le cas contraire, une exception sera levée, indiquant que l'authentification a échoué.
-		final UserDetails userDetails = userDetailsService
+		final CustomUserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getLogin());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);

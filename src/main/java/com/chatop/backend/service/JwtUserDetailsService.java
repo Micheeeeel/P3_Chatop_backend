@@ -25,15 +25,19 @@ public class JwtUserDetailsService implements UserDetailsService {
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		DAOUser user = userRepository.findByEmail(username);	// authentication is done by email
-		if (user == null) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
-		}
-		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
-				new ArrayList<>());
+	public CustomUserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		return loadUserByUserEmail(userName);	// because I authenticate with email
+
 	}
 
+	public CustomUserDetails loadUserByUserEmail(String userEmail) throws UsernameNotFoundException {
+		DAOUser user = userRepository.findByEmail(userEmail);	// authentication is done by email
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found with user email: " + userEmail);
+		}
+		return new CustomUserDetails(user);
+
+	}
 
 	public DAOUser save(DAOUser user) {
 		user.setPassword(bcryptEncoder.encode(user.getPassword()));
