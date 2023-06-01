@@ -1,5 +1,6 @@
 package com.chatop.backend.controller;
 
+import com.chatop.backend.model.UserDTO;
 import com.chatop.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,9 +58,17 @@ public class MainController {
         DAOUser user = userRepository.findByName(username);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+        } else {
+            UserDTO userResponse = new UserDTO(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail(),
+                    user.getCreatedAt(),
+                    user.getUpdatedAt()
+            );
+            return ResponseEntity.ok(userResponse);
 
-        return ResponseEntity.ok(user);
+        }
     }
 
 /*    @GetMapping({ "/auth/me" })
