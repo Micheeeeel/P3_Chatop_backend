@@ -53,12 +53,12 @@ public class JwtAuthenticationController {
 	@PostMapping("/api/auth/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-		authenticate(authenticationRequest.getLogin(), authenticationRequest.getPassword());
+		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 		
 		// Si l'authentification réussit, la méthode authenticate() ne lèvera pas d'exception et l'exécution continuera. 
 		// Dans le cas contraire, une exception sera levée, indiquant que l'authentification a échoué.
 		final CustomUserDetails userDetails = userDetailsService
-				.loadUserByUsername(authenticationRequest.getLogin());
+				.loadUserByUsername(authenticationRequest.getEmail());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
