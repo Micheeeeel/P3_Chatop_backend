@@ -19,7 +19,7 @@ public class RentalDTO {
 
     private int price;
 
-    private List<String> picture;
+    private List<String> picturePaths;
 
     private String description;
 
