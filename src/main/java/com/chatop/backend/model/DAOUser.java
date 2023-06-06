@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+
+import com.chatop.backend.model.DAORental;
 
 @Data  // @Data is a Lombok annotation. No need to add the getters and setters.
 @Entity // This tells Hibernate to make a table out of this class
@@ -31,16 +34,18 @@ public class DAOUser {
     private Date updatedAt;
 
     @PrePersist
-    @JsonProperty("created_at")
     protected void onCreate() {
         createdAt = new Date();
     }
 
     @PreUpdate
-    @JsonProperty("updated_at")
     protected void onUpdate() {
         updatedAt = new Date();
     }
+
+    @OneToMany(mappedBy = "owner")
+    private List<DAORental> rentals;
+
 
  /*   public Integer getId() {
         return id;

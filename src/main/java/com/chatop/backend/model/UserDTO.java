@@ -3,12 +3,16 @@ package com.chatop.backend.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+@Getter
+@Data
 public class UserDTO {
     private Integer id;
     private String name;
@@ -34,7 +38,7 @@ public class UserDTO {
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
-
+/*
     public void SetName(String name) {
         this.name = name;
     }
@@ -47,7 +51,7 @@ public class UserDTO {
     }
     public String getEmail() {
         return this.email;
-    }
+    }*/
 
 
 
