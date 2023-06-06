@@ -24,8 +24,8 @@ public class DAORental {
 
 /*    @ElementCollection
     private List<String> picture;*/
-    @ElementCollection
-    private List<String> picturePaths;
+    @Column(name = "picture_path")
+    private String picturePath;
 
     @Column(columnDefinition = "TEXT")
     private String description;
