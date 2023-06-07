@@ -22,8 +22,6 @@ public class DAORental {
 
     private int price;
 
-/*    @ElementCollection
-    private List<String> picture;*/
     @Column(name = "picture_path")
     private String picturePath;
 

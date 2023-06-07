@@ -2,7 +2,10 @@ package com.chatop.backend.service;
 
 import java.util.Optional;
 
+import com.chatop.backend.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.repository.UserRepository;
@@ -18,10 +21,6 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public Optional<DAOUser> getUser(final Integer id) {
-        return userRepository.findById(id);
-    }
-
     public Iterable<DAOUser> getUsers() {
         return userRepository.findAll();
     }
@@ -35,4 +34,26 @@ public class UserService {
         return savedUser;
     }
 
+    public DAOUser getUserById(final Integer id) {
+        Optional<DAOUser> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
+
+
+    public DAOUser getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+            DAOUser user = userRepository.findByName(username);
+
+            if(user == null){
+                throw new UserNotFoundException("There is no user currently authenticated");
+            }
+
+            return user;
+        }
+
+        throw new UserNotFoundException("There is no user currently authenticated");
+    }
 }

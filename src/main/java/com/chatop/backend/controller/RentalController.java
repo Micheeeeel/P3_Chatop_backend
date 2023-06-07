@@ -6,7 +6,7 @@ import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.model.RentalDTO;
 import com.chatop.backend.model.UserDTO;
 import com.chatop.backend.service.RentalService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.chatop.backend.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +15,36 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
+    @Autowired
     private final RentalService rentalService;
 
     @Autowired
-    public RentalController(RentalService rentalService) {
+    private final StorageService storageService;
+
+    @Autowired
+    public RentalController(RentalService rentalService, StorageService storageService) {
+
         this.rentalService = rentalService;
+        this.storageService = storageService;
     }
 
     @GetMapping
-    public ResponseEntity<List<DAORental>> getAllRentals() {
+    public ResponseEntity<List<RentalDTO>> getAllRentals() {
         List<DAORental> rentals = rentalService.findAll();
-        return ResponseEntity.ok(rentals);
+
+        List<RentalDTO> rentalDTOs = rentals.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(rentalDTOs);
     }
 
     @GetMapping("/{id}")
@@ -71,10 +84,24 @@ public class RentalController {
         return ResponseEntity.ok().body("Rental created !");
     }*/
     @PostMapping
-    public ResponseEntity<?> createRental(@RequestParam("rental") String rentalJson, @RequestParam("file") MultipartFile file) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<?> createRental(@RequestPart("picture") MultipartFile picture, @ModelAttribute RentalDTO rentalDTO) throws IOException {
+        String picturePath = storageService.store(picture);
         try {
-            RentalDTO rentalDTO = objectMapper.readValue(rentalJson, RentalDTO.class);
+            rentalDTO.setPicturePath(picturePath);
+
+            // Vous pouvez maintenant passer votre DTO au service qui gère les opérations de location
+             rentalService.createRental(rentalDTO);
+            return ResponseEntity.ok("{\"message\":\"Rental created !\"}");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid rental data!");
+
+    }
+
+       /* ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            RentalDTO rentalDTO = objectMapper.readValue(rentalStr, RentalDTO.class);
 
             // store file and get file path
             if (file != null && !file.isEmpty()) {
@@ -104,7 +131,7 @@ public class RentalController {
             e.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid rental data!");
-    }
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<RentalDTO> updateRental(@PathVariable(value = "id") Long rentalId, @Valid @RequestBody RentalDTO rentalDetails) {
