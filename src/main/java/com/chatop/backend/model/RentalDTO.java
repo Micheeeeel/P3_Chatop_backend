@@ -29,7 +29,7 @@ public class RentalDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date updated_at;
 
-    private UserDTO owner;
+    private Integer owner_id; // changed from UserDTO owner to Long owner_id
 
 
 }

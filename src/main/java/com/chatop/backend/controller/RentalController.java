@@ -69,7 +69,8 @@ public class RentalController {
         rentalDTO.setUpdated_at(daoRental.getUpdatedAt());
 
         UserDTO owner = convertUserToDto(daoRental.getOwner());
-        rentalDTO.setOwner(owner);
+        rentalDTO.setOwner_id(owner.getId()); // get the ID of the owner
+
         return rentalDTO;
     }
 
