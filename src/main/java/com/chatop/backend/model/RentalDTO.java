@@ -8,8 +8,11 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Getter
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RentalDTO {
     private Long id;
 

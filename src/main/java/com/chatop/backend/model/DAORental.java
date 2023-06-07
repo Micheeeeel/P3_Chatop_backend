@@ -42,7 +42,13 @@ public class DAORental {
 
     @PrePersist
     protected void onCreate() {
+
         createdAt = new Date();
+
+        // force valuing updateAt with createAt in case it is null
+        if (updatedAt == null) {
+            updatedAt = createdAt;
+        }
     }
 
     @PreUpdate

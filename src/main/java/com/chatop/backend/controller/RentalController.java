@@ -37,14 +37,17 @@ public class RentalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RentalDTO>> getAllRentals() {
+    public ResponseEntity<RentalResponse> getAllRentals() {
         List<DAORental> rentals = rentalService.findAll();
 
         List<RentalDTO> rentalDTOs = rentals.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(rentalDTOs);
+        RentalResponse response = new RentalResponse();
+        response.setRentals(rentalDTOs);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
