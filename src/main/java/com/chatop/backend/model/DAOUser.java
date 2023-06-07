@@ -36,16 +36,17 @@ public class DAOUser {
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();
+
+        // force valuing updateAt in case it is null
+        if (updatedAt == null) {
+            updatedAt = createdAt;
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
 
-        // force valuing updateAt in case it is null
-        if (updatedAt == null) {
-            updatedAt = createdAt;
-        }
     }
 
     @OneToMany(mappedBy = "owner")

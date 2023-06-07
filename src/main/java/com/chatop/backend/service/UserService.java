@@ -3,6 +3,7 @@ package com.chatop.backend.service;
 import java.util.Optional;
 
 import com.chatop.backend.exceptions.UserNotFoundException;
+import com.chatop.backend.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,5 +56,10 @@ public class UserService {
         }
 
         throw new UserNotFoundException("There is no user currently authenticated");
+    }
+
+
+    public Optional<DAOUser> findById(Integer id) {
+        return  userRepository.findById(id);
     }
 }
