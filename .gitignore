@@ -32,6 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 /application.log
+*.gz
 
 ### uploaded image files
-upload/
+images/

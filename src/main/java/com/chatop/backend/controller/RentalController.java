@@ -2,9 +2,7 @@ package com.chatop.backend.controller;
 
 
 import com.chatop.backend.model.DAORental;
-import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.model.RentalDTO;
-import com.chatop.backend.model.UserDTO;
 import com.chatop.backend.service.RentalService;
 import com.chatop.backend.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,10 +71,6 @@ public class RentalController {
         return rentalDTO;
     }
 
-    private UserDTO convertUserToDto(DAOUser daoUser) {
-        UserDTO userDTO = new UserDTO(daoUser.getId(),daoUser.getName(), daoUser.getEmail(), daoUser.getCreatedAt(), daoUser.getUpdatedAt());
-        return userDTO;
-    }
 
   /*  @PostMapping
     public ResponseEntity<?> createRental(@RequestBody RentalDTO rental) {
