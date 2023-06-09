@@ -2,6 +2,8 @@ package com.chatop.backend.controller;
 
 import com.chatop.backend.model.UserDTO;
 import com.chatop.backend.repository.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.service.UserService;
 
+@Api("API pour les opérations CRUD sur les utilisateurs.")
 @RestController // This means that this class is a RestController bean, and it returns a JSON format into the HTTP request body
 @RequestMapping(path="/api") // This means URL's start with /demo (after Application path)
 public class MainController {
@@ -43,6 +46,9 @@ public class MainController {
      * Read - Get all users
      * @return - An Iterable object of user full filled
      */
+    //Récupérer un produit par son Id
+
+    @ApiOperation(value = "Récupère tous les utilisateurs enregistrés")
     @GetMapping(path="/auth/all")
     public @ResponseBody Iterable<DAOUser> getAllUsers() {
         // This returns a JSON or XML with the users

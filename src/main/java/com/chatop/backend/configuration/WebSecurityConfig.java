@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate register and login pages
                 .authorizeRequests().antMatchers("/api/auth/login", "/api/auth/register").permitAll()
                 .antMatchers("/images/**").permitAll()  // allow unauthenticated access to /images
+                .antMatchers("/v2/api-docs","/api/v2/**", "/configuration/**", "/v2/swagger-ui/**", "/api/swagger-ui/**", "/swagger*/**", "swagger-io/**", "/webjars/**", "/swagger-ui/**").permitAll() // Autoriser l'accès à la documentation Swagger
 
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and()
