@@ -67,4 +67,16 @@ public class RentalService {
 
         return rentalDetails;
     }
+    public void updateRental(DAORental existingRental, RentalDTO rentalDTO) {
+        // Copy fields from rentalDTO to existingRental if they are not null
+        if (rentalDTO.getName() != null) existingRental.setName(rentalDTO.getName());
+        existingRental.setSurface(rentalDTO.getSurface());
+        existingRental.setPrice(rentalDTO.getPrice());
+        if (rentalDTO.getPicturePath() != null) existingRental.setPicturePath(rentalDTO.getPicturePath());
+        if (rentalDTO.getDescription() != null) existingRental.setDescription(rentalDTO.getDescription());
+
+        rentalRepository.save(existingRental);
+    }
+
+
 }

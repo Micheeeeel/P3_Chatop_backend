@@ -93,43 +93,28 @@ public class RentalController {
 
     }
 
-       /* ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            RentalDTO rentalDTO = objectMapper.readValue(rentalStr, RentalDTO.class);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRental(@PathVariable Long id, @RequestPart(value = "picture", required = false) MultipartFile picture, @ModelAttribute RentalDTO rentalDTO) throws IOException {
+        DAORental existingRental = rentalService.getRentalById(id);
+        if (existingRental == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
-            // store file and get file path
-            if (file != null && !file.isEmpty()) {
-                // Let's store the files into a folder "upload" in folder ressources
-                String uploadDirectory = System.getProperty("user.dir") + "/backendImageUpload";
+        // if a new picture file is provided, store it and update the picturePath
+        if (picture != null && !picture.isEmpty()) {
+            String picturePath = storageService.store(picture);
+            rentalDTO.setPicturePath(picturePath);
+        }
 
-                // create folder if not exists
-                File uploadDir = new File(uploadDirectory);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                // Sauvegardez le fichier et obtenez le chemin d'accès
-                String fileName = file.getOriginalFilename();
-                String filePath = Paths.get(uploadDirectory, fileName).toString();
-                File dest = new File(filePath);
-                file.transferTo(dest);
-
-                // Stockez le chemin d'accès dans le DTO
-                rentalDTO.setPicturePath(filePath);
-            }
-
-            rentalService.createRental(rentalDTO);
-
-            return ResponseEntity.ok().body("Rental created !");
+        // Update the rental
+        try{
+            rentalService.updateRental(existingRental,rentalDTO);
+            return ResponseEntity.ok("{\"message\":\"Rental updated !\"}");
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid rental data!");
-    }*/
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RentalDTO> updateRental(@PathVariable(value = "id") Long rentalId, @Valid @RequestBody RentalDTO rentalDetails) {
-        RentalDTO updatedRental = rentalService.updateRental(rentalId, rentalDetails);
-        return ResponseEntity.ok(updatedRental);
     }
 }
