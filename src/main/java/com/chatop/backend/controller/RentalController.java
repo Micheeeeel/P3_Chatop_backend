@@ -110,7 +110,7 @@ public class RentalController {
         try{
             rentalService.updateRental(existingRental,rentalDTO);
             return ResponseEntity.ok("{\"message\":\"Rental updated !\"}");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }

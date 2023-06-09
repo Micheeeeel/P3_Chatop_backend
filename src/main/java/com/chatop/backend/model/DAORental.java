@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data  // @Data is a Lombok annotation. No need to add the getters and setters.
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "rental") // indique le nom de la table associée.
+@Table(name = "rental")
 public class DAORental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +56,8 @@ public class DAORental {
     protected void onUpdate() {
         updatedAt = new Date();
     }
+
+    @OneToMany(mappedBy = "rental")
+    private List<DAOMessage> messages = new ArrayList<>();
 
 }
