@@ -5,6 +5,7 @@ import com.chatop.backend.model.MessageDTO;
 import com.chatop.backend.service.MessageService;
 import com.chatop.backend.service.RentalService;
 import com.chatop.backend.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class MessageController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Enregistre un nouveau message")
     public ResponseEntity<?> createMessage(@RequestBody MessageDTO messageDTO) {
 
         DAOMessage message = new DAOMessage();

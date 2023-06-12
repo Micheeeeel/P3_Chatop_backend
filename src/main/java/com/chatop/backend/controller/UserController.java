@@ -2,11 +2,10 @@ package com.chatop.backend.controller;
 
 import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.model.UserDTO;
-import com.chatop.backend.service.RentalService;
-import com.chatop.backend.service.StorageService;
+
 import com.chatop.backend.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +25,7 @@ public class UserController {
         this.userService = userService;
     }
     @GetMapping("/{id}")
+    @ApiOperation(value = "Récupère un utilisteur particulier")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id) {
         Optional<DAOUser> user = userService.findById(id);
         if (user.isPresent()) {

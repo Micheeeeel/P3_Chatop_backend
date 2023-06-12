@@ -1,15 +1,12 @@
 package com.chatop.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.chatop.backend.model.DAORental;
 
 @Data  // @Data is a Lombok annotation. No need to add the getters and setters.
 @Entity // This tells Hibernate to make a table out of this class

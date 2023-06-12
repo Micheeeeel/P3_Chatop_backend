@@ -4,13 +4,13 @@ package com.chatop.backend.controller;
 
 import com.chatop.backend.model.DAOUser;
 import com.chatop.backend.service.CustomUserDetails;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +37,7 @@ public class JwtAuthenticationController {
 
 
 	@PostMapping("/api/auth/register")
+	@ApiOperation(value = "Enregistre un nouvel utilisateur")
 	public ResponseEntity<?> saveUser(@RequestBody DAOUser user) throws Exception {
 
 		userDetailsService.save(user);
@@ -51,6 +52,7 @@ public class JwtAuthenticationController {
 	}
 
 	@PostMapping("/api/auth/login")
+	@ApiOperation(value = "Log d'un utilisateur")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
