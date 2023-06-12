@@ -12,8 +12,6 @@ public class ImageProperties {
     private String imageDir;
     private String baseUrl;
 
-    // getters and setters
-
     public String getFullImageDir() {
         return "file:" + this.imageDir;
     }

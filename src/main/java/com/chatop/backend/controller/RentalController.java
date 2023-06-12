@@ -1,17 +1,16 @@
 package com.chatop.backend.controller;
 
-
 import com.chatop.backend.model.DAORental;
 import com.chatop.backend.model.RentalDTO;
 import com.chatop.backend.service.RentalService;
 import com.chatop.backend.service.StorageService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +32,7 @@ public class RentalController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Récupère toutes les locations")
     public ResponseEntity<RentalResponse> getAllRentals() {
         List<DAORental> rentals = rentalService.findAll();
 
@@ -47,6 +47,7 @@ public class RentalController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Récupère une location particulière")
     public ResponseEntity<RentalDTO> getRentalById(@PathVariable(value = "id") Long rentalId) {
         DAORental daoRental = rentalService.getRentalById(rentalId);
         if (daoRental == null) {
@@ -72,12 +73,8 @@ public class RentalController {
     }
 
 
-  /*  @PostMapping
-    public ResponseEntity<?> createRental(@RequestBody RentalDTO rental) {
-        rentalService.createRental(rental);
-        return ResponseEntity.ok().body("Rental created !");
-    }*/
     @PostMapping
+    @ApiOperation(value = "Enresistre une nouvelle location")
     public ResponseEntity<?> createRental(@RequestPart("picture") MultipartFile picture, @ModelAttribute RentalDTO rentalDTO) throws IOException {
         String picturePath = storageService.store(picture);
         try {
@@ -94,6 +91,7 @@ public class RentalController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value = "Modifie une location particulière")
     public ResponseEntity<?> updateRental(@PathVariable Long id, @RequestPart(value = "picture", required = false) MultipartFile picture, @ModelAttribute RentalDTO rentalDTO) throws IOException {
         DAORental existingRental = rentalService.getRentalById(id);
         if (existingRental == null) {
