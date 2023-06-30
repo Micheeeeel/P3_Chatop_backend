@@ -40,6 +40,7 @@ public class MessageController {
         message.setRental(rental);
         message.setMessage(messageDTO.getMessage());
 
+        // insert new message into db
         messageService.createMessage(message);
 
         return ResponseEntity.ok("{\"message\":\"Message created !\"}");

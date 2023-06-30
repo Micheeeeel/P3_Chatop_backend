@@ -51,16 +51,18 @@ public class JwtTokenUtil implements Serializable {
 		return builder.sign(algorithm);
 	}
 
-	//validate token
+	// vérifie la validité du token avec les détails de l'utilisateur et l'expiration du token
 	public Boolean validateToken(String token, CustomUserDetails userDetails) {
 		final String userEmailFromToken = getUserEmailFromToken(token);
 		return (userEmailFromToken.equals(userDetails.getEmail()) && !isTokenExpired(token));
 	}
 
-	// Verify the token
+	//  Vérifie la conformité d'un jeton JWT en utilisant l'algorithme HMAC512 et la clé secrète.
 	public DecodedJWT verifyToken(String token) {
 		Algorithm algorithm = Algorithm.HMAC512(secret);
-		JWTVerifier verifier = JWT.require(algorithm).build();
+		JWTVerifier verifier = JWT.require(algorithm).build();	   // Création d'un vérificateur JWT en utilisant l'algorithme défini.
+
+		// Si la vérification réussit, un objet DecodedJWT contenant les informations décodées du jeton est retourné.
 		return verifier.verify(token);
 	}
 }

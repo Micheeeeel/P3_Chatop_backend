@@ -36,16 +36,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 
+		// Récupération du jeton JWT à partir de l'en-tête de la requête
 		final String requestTokenHeader = request.getHeader("Authorization");
 
 		String username = null;
 		String jwtToken = null;
-		// JWT Token is in the form "Bearer token". Remove Bearer word and get
-		// only the Token
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+			// Supprime le préfixe "Bearer" pour extraire le jeton JWT
 			jwtToken = requestTokenHeader.substring(7);
 			try {
+				// Le jeton JWT est ensuite vérifié
 				DecodedJWT jwt = jwtTokenUtil.verifyToken(jwtToken);
+				// Si la validation réussit, le nom d'utilisateur est extrait
 				username = jwtTokenUtil.getUserEmailFromToken(jwtToken);
 			} catch (Exception e) {
 				System.out.println("Unable to get JWT Token or JWT Token has expired");
@@ -57,22 +59,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		// Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
+			// Chargement des détails de l'utilisateur
 			CustomUserDetails userDetails = this.jwtUserDetailsService.loadUserByUserEmail(username);
 
-			// if token is valid configure Spring Security to manually set
-			// authentication
+			// Validation finale du jeton et configuration de l'authentification
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
+				// une instance UsernamePasswordAuthenticationToken est créée avec les détails de l'utilisateur, ses rôles et ses autorisations.
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
+				// Ajout des détails de l'authentification
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				// After setting the Authentication in the context, we specify
-				// that the current user is authenticated. So it passes the
-				// Spring Security Configurations successfully.
+				// l'authentification est définie dans le contexte de sécurité : signifie que l'utilisateur actuel est considéré comme authentifié par le système de sécurité
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		}
+		// On continue la chaine de filtre et le traitement de la requête par d'autres composants
 		chain.doFilter(request, response);
 	}
 }

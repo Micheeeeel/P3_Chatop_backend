@@ -45,7 +45,7 @@ public class JwtAuthenticationController {
 		// Load user details
 		final CustomUserDetails userDetails = userDetailsService.loadUserByUserEmail(user.getEmail());
 
-		// Generate token
+		// génère un jeton JWT valide en cas de succès de l'authentification
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtResponse(token));
@@ -54,21 +54,19 @@ public class JwtAuthenticationController {
 	@PostMapping("/api/auth/login")
 	@ApiOperation(value = "Log d'un utilisateur")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-
+		// authentification
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-		
-		// Si l'authentification réussit, la méthode authenticate() ne lèvera pas d'exception et l'exécution continuera. 
-		// Dans le cas contraire, une exception sera levée, indiquant que l'authentification a échoué.
+
+		// Génère un jeton JWT valide à partir des info utilisateur en cas de succès de l'authentification
 		final CustomUserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
-
 		final String token = jwtTokenUtil.generateToken(userDetails);
-
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
 
-
+	// Si l'authentification réussit, la méthode authenticate() ne lèvera pas d'exception et l'exécution continuera.
+	// Dans le cas contraire, une exception sera levée, indiquant que l'authentification a échoué.
 	private void authenticate(String login, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, password));

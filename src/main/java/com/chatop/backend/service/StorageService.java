@@ -33,20 +33,22 @@ public class StorageService {
         }
     }
 
+    // gestion du stockage d'un fichier téléchargé: vérifie, génère un nom de fichier unique, copie le fichier vers l'emplacement de stockage, puis renvoie l'URL complète du fichier stocké
     public String store(MultipartFile file) {
         try {
+            // s'assurer que le fichier n'est pas vide
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
             }
-            String originalFileName = file.getOriginalFilename();
-            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            String storedFileName = UUID.randomUUID().toString() + fileExtension;
+            String originalFileName = file.getOriginalFilename();   // le nom original du fichier est extrait (nom du fichier tel qu'il a été téléchargé par l'utilisateur)
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));   // extrayant l'extension du fichier
+            String storedFileName = UUID.randomUUID().toString() + fileExtension;   //combine un identifiant unique généré avec l'extension du fichier
 
-            try (InputStream is = file.getInputStream()) {
-                Files.copy(is, this.rootLocation.resolve(storedFileName));
+            try (InputStream is = file.getInputStream()) {  // un flux d'entrée est obtenu à partir du fichier
+                Files.copy(is, this.rootLocation.resolve(storedFileName));  // copier le flux d'entrée du fichier vers l'emplacement de stockage spécifié dans la config imageProperties
             }
 
-            return baseUrl + storedFileName;
+            return baseUrl + storedFileName;    // renvoie l'URL publique à laquelle le fichier peut être accessible
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
         }

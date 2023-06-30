@@ -36,3 +36,4 @@ build/
 
 ### uploaded image files
 images/
+*.tmp

@@ -27,6 +27,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 	}
 
+	// encapsule les détails de l'utilisateur chargés à partir de son adresse e-mail
 	public CustomUserDetails loadUserByUserEmail(String userEmail) throws UsernameNotFoundException {
 		DAOUser user = userRepository.findByEmail(userEmail);	// authentication is done by email
 		if (user == null) {

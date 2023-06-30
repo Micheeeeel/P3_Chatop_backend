@@ -74,13 +74,15 @@ public class RentalController {
 
 
     @PostMapping
-    @ApiOperation(value = "Enresistre une nouvelle location")
+    @ApiOperation(value = "Enregistre une nouvelle location")
     public ResponseEntity<?> createRental(@RequestPart("picture") MultipartFile picture, @ModelAttribute RentalDTO rentalDTO) throws IOException {
+        // enregistre l'image dans le service de stockage storageService et renvoie le chemin d'accès de l'image enregistré.
         String picturePath = storageService.store(picture);
         try {
+            // le chemin d'accès de l'image est défini dans l'objet rentalDTO
             rentalDTO.setPicturePath(picturePath);
 
-            // Vous pouvez maintenant passer votre DTO au service qui gère les opérations de location
+            // On peut maintenant passer le DTO au service qui gère les opérations de location
              rentalService.createRental(rentalDTO);
             return ResponseEntity.ok("{\"message\":\"Rental created !\"}");
         }catch (Exception e) {
@@ -98,13 +100,13 @@ public class RentalController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        // if a new picture file is provided, store it and update the picturePath
+        // prend en charge l'enregistrement de l'image (idem que dans createRental)
         if (picture != null && !picture.isEmpty()) {
             String picturePath = storageService.store(picture);
             rentalDTO.setPicturePath(picturePath);
         }
 
-        // Update the rental
+        // Met à jour le rental à partir de la DTO
         try{
             rentalService.updateRental(existingRental,rentalDTO);
             return ResponseEntity.ok("{\"message\":\"Rental updated !\"}");
